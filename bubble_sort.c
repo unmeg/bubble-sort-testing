@@ -14,7 +14,7 @@
 
 
 #define ARRAY_SIZE 1000
-#define NUM_EXPERIMENTS 20
+#define NUM_EXPERIMENTS 50
 
 int debug = 0; // print switch
 
@@ -81,7 +81,7 @@ int check_array(int array[]){
 
 void run_experiment(){
     int A[ARRAY_SIZE];
-    
+
     // Make a random array
     srand(time(NULL));
     for(int i = 0; i < ARRAY_SIZE; ++i){
@@ -108,16 +108,19 @@ void run_experiment(){
 int main() {
     clock_t start, finish;
     double execution_time, average;
+    int counter = 0;
 
     // Start the clock
     start = clock();
 
-    for (int experiments = 0; experiments == NUM_EXPERIMENTS; experiments++){
+    for (int experiments = 0; experiments < NUM_EXPERIMENTS; experiments++){
         if(debug){
             printf("Experiment %d..", experiments);
+            counter++;
         }
 
         run_experiment();
+        
     }
 
     // Stop the clock
@@ -126,5 +129,5 @@ int main() {
     execution_time = ((double)(finish - start)) / CLOCKS_PER_SEC;
     average = execution_time / NUM_EXPERIMENTS; // gives us average execution time
 
-    printf("Average execution time: %f seconds\n", average);
+    printf("Average execution time after %d trials: %f seconds\n", counter, average);
 }

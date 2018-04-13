@@ -14,10 +14,10 @@
 
 
 #define ARRAY_SIZE 1000
+#define NUM_EXPERIMENTS 20
 
 int debug = 0; // print switch
-clock_t start, finish;
-double execution_time;
+
 
 void sort(int array[]);
 void swap(int *first, int *second);
@@ -79,12 +79,9 @@ int check_array(int array[]){
     return 1; // sorted
 }
 
-int main() {
+void run_experiment(){
     int A[ARRAY_SIZE];
-
-    // Start the clock
-    start = clock();
-
+    
     // Make a random array
     srand(time(NULL));
     for(int i = 0; i < ARRAY_SIZE; ++i){
@@ -106,10 +103,28 @@ int main() {
     } else {
         printf("Fail.\n");
     }
+}
+
+int main() {
+    clock_t start, finish;
+    double execution_time, average;
+
+    // Start the clock
+    start = clock();
+
+    for (int experiments = 0; experiments == NUM_EXPERIMENTS; experiments++){
+        if(debug){
+            printf("Experiment %d..", experiments);
+        }
+
+        run_experiment();
+    }
 
     // Stop the clock
     finish = clock();
 
     execution_time = ((double)(finish - start)) / CLOCKS_PER_SEC;
-    printf("Execution time: %f seconds\n", execution_time);
+    average = execution_time / NUM_EXPERIMENTS; // gives us average execution time
+
+    printf("Average execution time: %f seconds\n", average);
 }

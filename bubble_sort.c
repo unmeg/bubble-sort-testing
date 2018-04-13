@@ -28,7 +28,7 @@ void sort(int A[], int n){
 
     while(sflag == 1){
         sflag = 0;
-        for (int j = 0; j < (count-1); j++){
+        for (int j = 0; j <= (count-1); j++){
             if (A[j + 1] < A[j] ){
                 swap(&A[j], &A[j+1]);
 
@@ -55,11 +55,26 @@ void swap(int *first, int *second) {
 }
 
 void print_array(int array[]){
-    printf("[");
+    printf("[ ");
     for(int i = 0; i < ARRAY_SIZE; ++i){
         printf("%d ", array[i]);
     }
     printf("]\n");
+}
+
+int check_array(int array[]){
+   
+    for (int i = 0; i < ARRAY_SIZE-1; i++){
+        if (array[i] > array[i+1]){
+            if(debug){
+                printf("%d is greater than %d\n", array[i], array[i+1]);
+            }
+            return 0; // not sorted
+        }
+
+    }
+
+    return 1; // sorted
 }
 
 int main() {
@@ -80,5 +95,11 @@ int main() {
     printf("Final array: \n");
 
     print_array(A);
+
+    if(check_array(A)){
+        printf("Successful sorting!\n");
+    } else {
+        printf("Fail.\n");
+    }
 
 }

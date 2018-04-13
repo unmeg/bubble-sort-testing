@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h> // for rand
+#include <time.h> // for time
 
 // Better Bubble Sort
 
@@ -12,9 +14,14 @@
 
 
 #define ARRAY_SIZE 10
-void swap(int *first, int *second);
 
-void sort(int array[], int size){
+int debug = 0; // print switch
+
+void sort(int array[], int n);
+void swap(int *first, int *second);
+void print_array(int array[]);
+
+void sort(int A[], int n){
 
     int count = n - 1; // number of pairs to be compared aka len
     int sflag = 1; // swap flag (bool)
@@ -23,7 +30,13 @@ void sort(int array[], int size){
         sflag = 0;
         for (int j = 0; j < (count-1); j++){
             if (A[j + 1] < A[j] ){
+                swap(&A[j], &A[j+1]);
 
+                if(debug==1){
+                    printf("%d swapped with %d\n", A[j], A[j+1]);
+                    print_array(A);
+                }
+                
                 sflag = 1;
             }
         }
@@ -32,13 +45,40 @@ void sort(int array[], int size){
 
 }
 
-for (int i = 0; i < arraySize; i++) {
-    for (int j = 0; j < (arraySize - 1); j++) {
-      if (array[j] > array[j + 1]) {
-        /*********** This line was changed ***********/
-        swap(&array[j+1], &array[j]); // You were earlier swapping ith and jth entries.
-        /*********************************************/
-      }
+void swap(int *first, int *second) {
+    int temp;
+
+    temp = *first;
+    *first = *second;  
+    *second = temp;  
+
+}
+
+void print_array(int array[]){
+    printf("[");
+    for(int i = 0; i < ARRAY_SIZE; ++i){
+        printf("%d ", array[i]);
     }
-  }
-  //Print out sorted
+    printf("]\n");
+}
+
+int main() {
+    int A[ARRAY_SIZE];
+
+    // Make a random array
+    srand(time(NULL));
+    for(int i = 0; i < ARRAY_SIZE; ++i){
+        A[i] = rand() % 1000 + 1; // these numbers are hardcoded TODO change
+    }
+
+    printf("Initial array: \n");
+    print_array(A);
+    printf("\n");
+
+    sort(A, ARRAY_SIZE);
+
+    printf("Final array: \n");
+
+    print_array(A);
+
+}

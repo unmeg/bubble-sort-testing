@@ -17,11 +17,12 @@
 #define NUM_EXPERIMENTS 50
 
 int debug = 0; // print switch
-
-
+uint swap_count = 0; // keep track of swaps
+uint comp_count = 0; // keep track of swaps
 void sort(int array[]);
 void swap(int *first, int *second);
 void print_array(int array[]);
+void run_experiment(void);
 
 void sort(int A[]){
 
@@ -32,6 +33,7 @@ void sort(int A[]){
         sflag = 0;
         for (int j = 0; j <= (count-1); j++){
             if (A[j + 1] < A[j] ){
+                comp_count++; // track comparison
                 swap(&A[j], &A[j+1]);
 
                 if(debug==1){
@@ -53,6 +55,8 @@ void swap(int *first, int *second) {
     temp = *first;
     *first = *second;  
     *second = temp;  
+    
+    swap_count++; // count swaps
 
 }
 
@@ -79,7 +83,7 @@ int check_array(int array[]){
     return 1; // sorted
 }
 
-void run_experiment(){
+void run_experiment(void){
     int A[ARRAY_SIZE];
 
     // Make a random array
@@ -108,7 +112,7 @@ void run_experiment(){
 int main() {
     clock_t start, finish;
     double execution_time, average;
-    int counter = 0;
+    int counter = NUM_EXPERIMENTS;
 
     // Start the clock
     start = clock();
@@ -130,4 +134,6 @@ int main() {
     average = execution_time / NUM_EXPERIMENTS; // gives us average execution time
 
     printf("Average execution time after %d trials: %f seconds\n", counter, average);
+    printf("Swaps: %d\n", swap_count/NUM_EXPERIMENTS);
+    printf("Comps: %d\n", comp_count/NUM_EXPERIMENTS);
 }

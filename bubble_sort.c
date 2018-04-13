@@ -13,17 +13,19 @@
 */
 
 
-#define ARRAY_SIZE 10
+#define ARRAY_SIZE 1000
 
 int debug = 0; // print switch
+clock_t start, finish;
+double execution_time;
 
-void sort(int array[], int n);
+void sort(int array[]);
 void swap(int *first, int *second);
 void print_array(int array[]);
 
-void sort(int A[], int n){
+void sort(int A[]){
 
-    int count = n - 1; // number of pairs to be compared aka len
+    int count = ARRAY_SIZE - 1; // number of pairs to be compared aka len
     int sflag = 1; // swap flag (bool)
 
     while(sflag == 1){
@@ -80,17 +82,20 @@ int check_array(int array[]){
 int main() {
     int A[ARRAY_SIZE];
 
+    // Start the clock
+    start = clock();
+
     // Make a random array
     srand(time(NULL));
     for(int i = 0; i < ARRAY_SIZE; ++i){
-        A[i] = rand() % 1000 + 1; // these numbers are hardcoded TODO change
+        A[i] = rand() % (ARRAY_SIZE*10) + 1; // Random number between 0 and 1000?
     }
 
     printf("Initial array: \n");
     print_array(A);
     printf("\n");
 
-    sort(A, ARRAY_SIZE);
+    sort(A); // Sort the array
 
     printf("Final array: \n");
 
@@ -102,4 +107,9 @@ int main() {
         printf("Fail.\n");
     }
 
+    // Stop the clock
+    finish = clock();
+
+    execution_time = ((double)(finish - start)) / CLOCKS_PER_SEC;
+    printf("Execution time: %f seconds\n", execution_time);
 }

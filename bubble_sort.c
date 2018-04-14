@@ -17,8 +17,8 @@
 #define NUM_EXPERIMENTS 50
 
 int debug = 0; // print switch
-uint swap_count = 0; // keep track of swaps
-uint comp_count = 0; // keep track of swaps
+int swap_count = 0; // keep track of swaps
+int comp_count = 0; // keep track of swaps
 double execution_time = 0;
 void sort(int array[]);
 void swap(int *first, int *second);
@@ -34,7 +34,7 @@ void sort(int A[]){
         sflag = 0;
         for (int j = 0; j <= (count-1); j++){
             if (A[j + 1] < A[j] ){
-                comp_count++; // track comparison
+                // comp_count++; // track comparison
                 swap(&A[j], &A[j+1]);
 
                 if(debug==1){
@@ -44,6 +44,7 @@ void sort(int A[]){
                 
                 sflag = 1;
             }
+            comp_count++;
         }
     count--;    
     }
@@ -152,6 +153,7 @@ int main(int argc, char *argv[]) {
     int counter = NUM_EXPERIMENTS;
     int type = 1;
     char *p;
+    
 
     if(argc != 1){
         type = strtol(argv[1], &p, 10); // takes CL input and converts to string

@@ -198,9 +198,9 @@ int main(int argc, char *argv[]) {
         
     }   
     
-    if(debug){
-        average = execution_time / NUM_EXPERIMENTS; // gives us average execution time
-    }
+   
+    average = execution_time / NUM_EXPERIMENTS; // gives us average execution time
+   
 
     write_to_file("times.csv", average, ARRAY_SIZE);
 

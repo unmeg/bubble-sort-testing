@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h> // for rand
+#include <string.h>
 #include <time.h> // for time
 
 // Better Bubble Sort
@@ -13,17 +14,19 @@
 */
 
 
-#define ARRAY_SIZE 1000
-#define NUM_EXPERIMENTS 50
+// #define ARRAY_SIZE 1000
+#define NUM_EXPERIMENTS 100
 
 int debug = 0; // print switch
 int swap_count = 0; // keep track of swaps
 int comp_count = 0; // keep track of swaps
 double execution_time = 0;
+int ARRAY_SIZE = 1000;
 void sort(int array[]);
 void swap(int *first, int *second);
 void print_array(int array[]);
 void run_experiment(int type);
+void write_to_file(char *filename, double value, int array_size);
 
 void sort(int A[]){
 
@@ -141,11 +144,30 @@ void run_experiment(int type){
         print_array(A);
     }
     
-    if(check_array(A)){
-        printf("Successful sorting!\n");
-    } else {
-        printf("Failed to sort.\n");
+    // if(check_array(A)){
+    //     printf("Successful sorting!\n");
+    // } else {
+    //     printf("Failed to sort.\n");
+    // }
+}
+
+// void save_results(char *filename, int array[]){
+void write_to_file(char *filename, double value, int array_size){
+ 
+    if(debug){
+        printf("\n File: %s\n",filename);
     }
+
+    FILE *fp;
+       
+    fp=fopen(filename, "a"); //appends
+    fprintf(fp, "%f,%d\n", value, array_size);
+    fclose(fp);
+    
+    if(debug){
+        printf("\n %s done", filename);
+    }
+ 
 }
 
 int main(int argc, char *argv[]) {
@@ -153,10 +175,12 @@ int main(int argc, char *argv[]) {
     int counter = NUM_EXPERIMENTS;
     int type = 1;
     char *p;
-    
+        
 
     if(argc != 1){
         type = strtol(argv[1], &p, 10); // takes CL input and converts to string
+        ARRAY_SIZE  = strtol(argv[2], &p, 10);
+
         if(type > 3){
             printf("Command line argument too big.\n\n./bs <type> is the syntax.\n\n");
             exit(0);
@@ -174,10 +198,19 @@ int main(int argc, char *argv[]) {
         
     }   
     
-    average = execution_time / NUM_EXPERIMENTS; // gives us average execution time
+    if(debug){
+        average = execution_time / NUM_EXPERIMENTS; // gives us average execution time
+    }
 
-    printf("Average execution time after %d trials: %f seconds\n", counter, average);
-    printf("Swaps: %d\n", swap_count/NUM_EXPERIMENTS);
-    printf("Comps: %d\n", comp_count/NUM_EXPERIMENTS);
+    write_to_file("times.csv", average, ARRAY_SIZE);
+
+    if(debug){
+        printf("Average execution time after %d trials: %f seconds\n", counter, average);
+        printf("Swaps: %d\n", swap_count/NUM_EXPERIMENTS);
+        printf("Comps: %d\n", comp_count/NUM_EXPERIMENTS);
+    }
+
+    write_to_file("comps.csv",comp_count/NUM_EXPERIMENTS, ARRAY_SIZE);
+    
 
 }
